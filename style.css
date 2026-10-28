@@ -1,0 +1,450 @@
+/* ============================================
+   ВИКИНЫ СНЫ — стили
+   ============================================ */
+
+:root {
+  --bg-deep: #0a0a14;
+  --bg-soft: #12121f;
+  --ink: #e8e6f0;
+  --ink-soft: #a8a4c0;
+  --gold: #c9a86a;
+  --card-radius: 10px;
+  --shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'Inter', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100%;
+  background: var(--bg-deep);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+body {
+  background:
+    radial-gradient(ellipse at 20% 0%, #1a1430 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 100%, #10182a 0%, transparent 55%),
+    var(--bg-deep);
+  min-height: 100vh;
+}
+
+/* ---------- Звёзды ---------- */
+.stars {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+    radial-gradient(1px 1px at 60% 70%, #fff, transparent),
+    radial-gradient(1px 1px at 80% 20%, #fff, transparent),
+    radial-gradient(1px 1px at 35% 85%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 55%, #fff, transparent),
+    radial-gradient(1px 1px at 10% 60%, #fff, transparent),
+    radial-gradient(1px 1px at 50% 10%, #fff, transparent),
+    radial-gradient(1px 1px at 70% 90%, #fff, transparent);
+  opacity: 0.35;
+  animation: twinkle 8s ease-in-out infinite;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.25; }
+  50%      { opacity: 0.55; }
+}
+
+/* ============================================
+   КАТАЛОГ
+   ============================================ */
+
+.catalog {
+  position: relative;
+  z-index: 1;
+  padding: 80px 40px 60px;
+  transition: opacity .6s ease, transform .6s ease, filter .6s ease;
+}
+
+body.is-viewing .catalog {
+  opacity: 0;
+  transform: scale(0.95);
+  filter: blur(8px);
+  pointer-events: none;
+}
+
+.catalog__header {
+  text-align: center;
+  margin-bottom: 70px;
+}
+
+.catalog__title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+  text-shadow: 0 0 40px rgba(201, 168, 106, 0.25);
+}
+
+.catalog__subtitle {
+  margin-top: 12px;
+  font-size: 0.9rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.catalog__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 32px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.catalog__footer {
+  text-align: center;
+  margin-top: 80px;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+/* ---------- Карточка в каталоге ---------- */
+.tile {
+  position: relative;
+  aspect-ratio: 400 / 600;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transform: rotate(-0.5deg);
+  transition: transform .5s cubic-bezier(.2,.8,.2,1),
+              box-shadow .5s ease;
+  opacity: 0;
+  animation: tileIn .8s cubic-bezier(.2,.8,.2,1) forwards;
+  content-visibility: auto;
+}
+
+.tile:nth-child(even) { transform: rotate(0.6deg); }
+
+@keyframes tileIn {
+  from { opacity: 0; transform: translateY(30px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .7s cubic-bezier(.2,.8,.2,1);
+}
+
+/* Блик */
+.tile::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg,
+    transparent 30%,
+    rgba(255,255,255,0.18) 45%,
+    transparent 60%);
+  transform: translateX(-120%);
+  transition: transform .9s ease;
+  pointer-events: none;
+}
+
+.tile:hover {
+  transform: translateY(-8px) rotate(0deg) scale(1.03);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.65),
+              0 0 40px rgba(201, 168, 106, 0.25);
+}
+
+.tile:hover img { transform: scale(1.06); }
+.tile:hover::after { transform: translateX(120%); }
+
+/* На компьютере — текст появляется при наведении */
+.tile__preview {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 24px;
+  background: linear-gradient(to top,
+    rgba(0,0,0,0.85) 0%,
+    rgba(0,0,0,0.4) 40%,
+    transparent 70%);
+  opacity: 0;
+  transition: opacity .5s ease;
+  pointer-events: none;
+}
+
+@media (hover: hover) {
+  .tile:hover .tile__preview { opacity: 1; }
+}
+
+.tile__preview-title {
+  font-family: var(--font-serif);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.tile__preview-date {
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ============================================
+   ПРОСМОТР
+   ============================================ */
+
+.viewer {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .6s ease;
+  padding: 80px 20px;
+}
+
+body.is-viewing .viewer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.viewer__close {
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 10px 0;
+  transition: color .3s ease;
+}
+
+.viewer__close:hover { color: var(--gold); }
+
+.viewer__counter {
+  position: absolute;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-serif);
+  font-size: 1rem;
+  color: var(--ink-soft);
+  letter-spacing: 0.1em;
+}
+
+.viewer__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-family: var(--font-serif);
+  font-size: 3rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 20px;
+  transition: color .3s ease, transform .3s ease;
+  user-select: none;
+}
+
+.viewer__nav:hover {
+  color: var(--gold);
+  transform: translateY(-50%) scale(1.15);
+}
+
+.viewer__nav--prev { left: 20px; }
+.viewer__nav--next { right: 20px; }
+
+/* ---------- Карточка-открытка ---------- */
+.card {
+  width: min(460px, 88vw);
+  aspect-ratio: 400 / 600;
+  perspective: 1800px;
+  cursor: pointer;
+  animation: cardFloat 6s ease-in-out infinite;
+}
+
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+.card__inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform .85s cubic-bezier(.4, 0, .2, 1);
+  will-change: transform;
+}
+
+.card.is-flipped .card__inner { transform: rotateY(180deg); }
+
+.card__face {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--shadow);
+}
+
+.card__face--front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card__face--back {
+  transform: rotateY(180deg);
+  background:
+    radial-gradient(ellipse at 50% 0%, #1e1a35 0%, transparent 70%),
+    linear-gradient(160deg, #14121f 0%, #0d0b16 100%);
+  border: 1px solid rgba(201, 168, 106, 0.2);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  padding: 40px 32px 32px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Тонкий скроллбар */
+.card__face--back::-webkit-scrollbar {
+  width: 4px;
+}
+.card__face--back::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 106, 0.35);
+  border-radius: 4px;
+}
+.card__face--back::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.card__date {
+  font-size: 0.75rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .6s ease .4s, transform .6s ease .4s;
+}
+
+.card__title {
+  font-family: var(--font-serif);
+  font-size: 1.8rem;
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 24px;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .6s ease .55s, transform .6s ease .55s;
+}
+
+.card__text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--ink-soft);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity .6s ease .7s, transform .6s ease .7s;
+  padding-bottom: 8px;
+  white-space: pre-line;
+}
+
+.card.is-flipped .card__date,
+.card.is-flipped .card__title,
+.card.is-flipped .card__text {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Кнопка возврата к обложке */
+.card__flip-back {
+  position: sticky;
+  bottom: 0;
+  align-self: flex-end;
+  margin-top: 24px;
+  background: rgba(201, 168, 106, 0.1);
+  border: 1px solid rgba(201, 168, 106, 0.3);
+  color: var(--gold);
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background .3s ease, transform .3s ease;
+  opacity: 0;
+}
+
+.card.is-flipped .card__flip-back {
+  opacity: 1;
+  transition: opacity .5s ease 1s, background .3s ease, transform .3s ease;
+}
+
+.card__flip-back:hover {
+  background: rgba(201, 168, 106, 0.2);
+  transform: rotate(-30deg);
+}
+
+/* ============================================
+   МОБИЛЬНАЯ ВЕРСИЯ
+   ============================================ */
+
+@media (max-width: 720px) {
+  .catalog { padding: 50px 20px 40px; }
+  .catalog__header { margin-bottom: 40px; }
+  .catalog__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .tile__preview { display: none; }
+
+  .card { width: min(400px, 90vw); }
+  .card__face--back { padding: 32px 24px 24px; }
+  .card__title { font-size: 1.5rem; }
+  .card__text { font-size: 0.95rem; line-height: 1.7; }
+
+  .viewer__nav { font-size: 2.2rem; padding: 12px; }
+  .viewer__close { top: 20px; left: 20px; font-size: 0.75rem; }
+}
+
+/* Отключаем hover-эффекты на тач-устройствах */
+@media (hover: none) {
+  .tile:hover { transform: rotate(-0.5deg); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+  .tile:hover img { transform: none; }
+}

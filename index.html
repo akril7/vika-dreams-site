@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Викины сны</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Звёздный фон -->
+  <div class="stars" aria-hidden="true"></div>
+
+  <!-- ======== КАТАЛОГ ======== -->
+  <main class="catalog" id="catalog">
+    <header class="catalog__header">
+      <h1 class="catalog__title">Викины сны</h1>
+      <p class="catalog__subtitle">Хранитель снов · <span id="dreamCount">0</span></p>
+    </header>
+
+    <div class="catalog__grid" id="catalogGrid">
+      <!-- карточки снов рендерит JS -->
+    </div>
+
+    <footer class="catalog__footer">
+      Здесь бережно хранятся сны.
+    </footer>
+  </main>
+
+  <!-- ======== ПРОСМОТР ======== -->
+  <section class="viewer" id="viewer" aria-hidden="true">
+    <button class="viewer__close" id="closeBtn" aria-label="Закрыть">← К каталогу</button>
+
+    <div class="card" id="card">
+      <div class="card__inner">
+        <div class="card__face card__face--front">
+          <img id="cardCover" src="" alt="">
+        </div>
+        <div class="card__face card__face--back">
+          <span class="card__date" id="cardDate"></span>
+          <h2 class="card__title" id="cardTitle"></h2>
+          <p class="card__text" id="cardText"></p>
+          <button class="card__flip-back" id="flipBackBtn" aria-label="Закрыть сон">↺</button>
+        </div>
+      </div>
+    </div>
+
+    <p class="viewer__counter" id="viewerCounter"></p>
+
+    <button class="viewer__nav viewer__nav--prev" id="prevBtn" aria-label="Предыдущий сон">‹</button>
+    <button class="viewer__nav viewer__nav--next" id="nextBtn" aria-label="Следующий сон">›</button>
+  </section>
+
+  <!-- Данные -->
+  <script src="dreams.js"></script>
+  <!-- Логика -->
+  <script src="script.js"></script>
+</body>
+</html>
